@@ -8,12 +8,12 @@ export function searchTerms(terms, query = '', category = 'all', view = 'all', f
     && (view !== 'custom' || entry.custom)
     && (view !== 'favorites' || favorites.includes(entry.id))
     && words.every(word => normalize([entry.term, entry.expansion, entry.definition, entry.category].join(' ')).includes(word)))
-    .sort((a, b) => Number(normalize(b.term) === exact) - Number(normalize(a.term) === exact) || a.term.localeCompare(b.term, undefined, { numeric: true, sensitivity: 'base' }) || a.expansion.localeCompare(b.expansion));
+    .sort((a, b) => Number(normalize(b.term) === exact) - Number(normalize(a.term) === exact) || a.term.localeCompare(b.term, undefined, { numeric: true, sensitivity: 'base' }) || (a.expansion || '').localeCompare(b.expansion || ''));
 }
 export function validateEntry(entry) {
-  entry = { definition: '', category: '', ...entry };
+  entry = { expansion: '', definition: '', category: '', ...entry };
   for (const [field, max] of Object.entries({term:80, expansion:160, definition:2000, category:50})) {
-    if (typeof entry?.[field] !== 'string' || (['term', 'expansion'].includes(field) && !entry[field].trim()) || entry[field].length > max) throw new Error(`Each term needs a ${field} (up to ${max} characters).`);
+    if (typeof entry?.[field] !== 'string' || (field === 'term' && !entry[field].trim()) || entry[field].length > max) throw new Error(`Each term needs a ${field} (up to ${max} characters).`);
   }
   return Object.fromEntries(['term', 'expansion', 'definition', 'category'].map(field => [field, entry[field].trim()]));
 }
@@ -23,4 +23,4 @@ export function parseImport(text) {
   if (!Array.isArray(rows) || rows.length > 10000) throw new Error('Choose a JSON glossary containing up to 10,000 terms.');
   return rows.map(validateEntry);
 }
-export function entryKey(entry) { return normalize(entry.term.trim()) + '\u0000' + normalize(entry.expansion.trim()); }
+export function entryKey(entry) { return normalize(entry.term.trim()) + '\u0000' + normalize((entry.expansion || '').trim()); }

@@ -12,10 +12,10 @@ A Chrome extension for decoding workplace acronyms and building your own company
 
 ## Use
 
-- Start typing to search your entries by acronym, full name, definition, or category. Exact acronym matches appear first. Multiple search words can match across fields.
+- Start typing to search your entries by acronym, expanded term, definition, or category. Exact acronym matches appear first. Multiple search words can match across fields.
 - Choose a category to narrow results.
-- Click **Add term** to save company-specific vocabulary. Definition and category are optional. Choose an existing category or type a new one.
-- Click **Edit** on any entry to change its meaning or delete it. Duplicate acronyms with different full names are supported.
+- Click **Add term** to save company-specific vocabulary. Expanded term, definition, and category are optional. Choose an existing category or type a new one.
+- Click **Edit** on any entry to change its meaning or delete it. Duplicate acronyms with different expanded terms are supported.
 - Star entries to find them under **Favorites**. Your additions appear under **My terms**.
 - Click **↗** for a larger view in a Chrome tab. It still runs as an extension.
 - Press **Alt+Shift+G** (Option+Shift+G on Mac) to open the popup. Chrome may reserve or conflict with shortcuts; customize it at `chrome://extensions/shortcuts`.
@@ -23,7 +23,7 @@ A Chrome extension for decoding workplace acronyms and building your own company
 
 ## Backup and share
 
-**Export** downloads a JSON backup of your glossary and favorites. **Import** accepts an exported file or a JSON array with `term`, `expansion`, `definition`, and `category` fields (definition and category are optional):
+**Export** downloads a JSON backup of your glossary and favorites. **Import** accepts an exported file or a JSON array with `term`, `expansion`, `definition`, and `category` fields (expansion, definition, and category are optional):
 
 ```json
 [
@@ -36,7 +36,7 @@ A Chrome extension for decoding workplace acronyms and building your own company
 ]
 ```
 
-Import validates the entire file before saving, adds new entries to **My terms**, and keeps existing entries with the same term and full name. Favorites are restored when importing an idk export. Import merges; it does not replace or overwrite your glossary. To transfer an edited definition, edit the existing entry or import into a fresh installation.
+Import validates the entire file before saving, adds new entries to **My terms**, and keeps existing entries with the same term and expanded term. Favorites are restored when importing an idk export. Import merges; it does not replace or overwrite your glossary. To transfer an edited definition, edit the existing entry or import into a fresh installation.
 
 ## Storage and privacy
 

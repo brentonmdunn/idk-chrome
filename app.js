@@ -52,7 +52,8 @@ function render() {
     const heading = element('div', 'term-heading');
     heading.append(element('h2', '', entry.term));
     if (entry.category) heading.append(element('span', 'category-badge', entry.category));
-    content.append(heading, element('h3', '', entry.expansion));
+    content.append(heading);
+    if (entry.expansion) content.append(element('h3', '', entry.expansion));
     if (entry.definition) content.append(element('p', '', entry.definition));
     const actions = element('div', 'card-actions');
     const saved = state.favorites.includes(entry.id);
@@ -98,7 +99,7 @@ $('term-form').addEventListener('submit', async event => {
   try {
     const entry = validateEntry(Object.fromEntries(['term','expansion','definition','category'].map(field => [field, $(field === 'category' ? 'term-category' : field).value])));
     const saved = await mutate(next => {
-      if (next.terms.some(other => other.id !== editingId && entryKey(other) === entryKey(entry))) throw new Error('That term and full name already exist. Edit the existing entry instead.');
+      if (next.terms.some(other => other.id !== editingId && entryKey(other) === entryKey(entry))) throw new Error('That term and expanded term already exist. Edit the existing entry instead.');
       if (editingId) {
         const index = next.terms.findIndex(other => other.id === editingId);
         if (index < 0) throw new Error('This entry was removed in another window.');
@@ -125,7 +126,7 @@ $('import-file').addEventListener('change', async event => {
     if (file.size > 8 * 1024 * 1024) throw new Error('Please use a JSON file smaller than 8 MB.');
     const text = await file.text(); const rows = parseImport(text);
     const raw = JSON.parse(text);
-    if (!await confirmAction('Import glossary?', `Merge ${rows.length} terms into your glossary? Existing terms with the same term and full name will be kept. New terms appear in My terms.`)) return;
+    if (!await confirmAction('Import glossary?', `Merge ${rows.length} terms into your glossary? Existing terms with the same term and expanded term will be kept. New terms appear in My terms.`)) return;
     let added = 0;
     if (await mutate(next => {
       const keys = new Map(next.terms.map(entry => [entryKey(entry), entry]));

@@ -56,6 +56,7 @@ test('definition and category may be blank or omitted', () => {
   assert.deepEqual(validateEntry(entry), expected);
   assert.deepEqual(validateEntry({...entry, definition: '  ', category: ''}), expected);
   assert.deepEqual(parseImport(JSON.stringify([entry])), [expected]);
-  assert.throws(() => validateEntry({...entry, expansion: ''}));
+  assert.deepEqual(validateEntry({term: 'WBR'}), {term: 'WBR', expansion: '', definition: '', category: ''});
+  assert.throws(() => validateEntry({...entry, term: ''}));
   assert.throws(() => validateEntry({...entry, category: 'x'.repeat(51)}));
 });
