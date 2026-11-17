@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>idk — Workplace Glossary</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<div class="app">
+<header><a class="brand" href="index.html" aria-label="idk home"><span class="logo">?</span><span>idk<span class="brand-dot">.</span></span></a><div class="header-actions"><span class="local-badge"><i></i> Saved locally</span><button id="expand" class="icon-button" title="Open in a full tab" aria-label="Open in a full tab">↗</button></div></header>
+<section class="intro"><div class="eyebrow">YOUR WORKPLACE, DECODED</div><h1>Less jargon.<br> More <span>“got it.”</span></h1><p>Big ideas. Small acronyms. All in one place.</p></section>
+<section class="search-area"><label class="search-box"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search" type="search" placeholder="Search an acronym, term, or definition…" aria-label="Search glossary" autofocus><kbd>/</kbd></label></section>
+<nav class="tabs" aria-label="Glossary view"><button class="tab active" data-view="all" aria-pressed="true">All terms <span id="all-count">0</span></button><button class="tab" data-view="favorites" aria-pressed="false">Favorites <span id="favorite-count">0</span></button><button class="tab" data-view="custom" aria-pressed="false">My terms <span id="custom-count">0</span></button></nav>
+<div class="list-toolbar"><div class="filter-wrap"><select id="category" aria-label="Filter by category"><option value="all">All categories</option></select><span id="result-count" aria-live="polite"></span></div><button id="add" class="primary small"><span>＋</span> Add term</button></div>
+<main id="results" aria-label="Glossary terms"></main>
+<footer><span>A little clarity goes a long way.</span><div><button id="import">Import</button><span class="divider">/</span><button id="export">Export</button></div></footer>
+<input id="import-file" type="file" accept="application/json,.json" hidden>
+<div id="toast" class="toast" role="status" hidden></div>
+<dialog id="editor"><form id="term-form"><div class="dialog-header"><div><div class="eyebrow">MAKE IT MAKE SENSE</div><h2 id="editor-title">Add a term</h2></div><button type="button" id="close-editor" class="icon-button" aria-label="Close">×</button></div><label>Acronym or term<input id="term" required maxlength="80" placeholder="e.g. WBR"></label><label>Full name<input id="expansion" required maxlength="160" placeholder="e.g. Weekly Business Review"></label><label>Definition<textarea id="definition" required maxlength="2000" rows="3" placeholder="What does it mean at your company?"></textarea></label><label>Category<input id="term-category" list="categories" required maxlength="50" placeholder="e.g. Operations"><datalist id="categories"></datalist></label><p id="form-error" class="error" role="alert"></p><div class="dialog-footer"><button type="button" id="delete" class="danger" hidden>Delete term</button><button type="submit" class="primary">Save term</button></div></form></dialog>
+<dialog id="confirm-dialog"><form method="dialog"><h2 id="confirm-title">Confirm</h2><p id="confirm-message"></p><div class="dialog-footer"><button value="cancel" class="secondary">Cancel</button><button value="confirm" class="primary">Confirm</button></div></form></dialog>
+</div><script type="module" src="app.js"></script>
+</body></html>
