@@ -49,3 +49,13 @@ test('manifest references files that exist and requests only local storage', () 
   assert.deepEqual(manifest.permissions,['storage']);
   for (const file of [manifest.action.default_popup,...Object.values(manifest.icons)]) assert.ok(fs.existsSync(new URL(`../${file}`,import.meta.url)));
 });
+
+test('definition and category may be blank or omitted', () => {
+  const entry = {term: 'WBR', expansion: 'Weekly Business Review'};
+  const expected = {...entry, definition: '', category: ''};
+  assert.deepEqual(validateEntry(entry), expected);
+  assert.deepEqual(validateEntry({...entry, definition: '  ', category: ''}), expected);
+  assert.deepEqual(parseImport(JSON.stringify([entry])), [expected]);
+  assert.throws(() => validateEntry({...entry, expansion: ''}));
+  assert.throws(() => validateEntry({...entry, category: 'x'.repeat(51)}));
+});

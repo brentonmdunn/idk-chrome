@@ -14,7 +14,7 @@ A Chrome extension for decoding workplace acronyms and building your own company
 
 - Start typing to search your entries by acronym, full name, definition, or category. Exact acronym matches appear first. Multiple search words can match across fields.
 - Choose a category to narrow results.
-- Click **Add term** to save company-specific vocabulary. Choose an existing category or type a new one.
+- Click **Add term** to save company-specific vocabulary. Definition and category are optional. Choose an existing category or type a new one.
 - Click **Edit** on any entry to change its meaning or delete it. Duplicate acronyms with different full names are supported.
 - Star entries to find them under **Favorites**. Your additions appear under **My terms**.
 - Click **↗** for a larger view in a Chrome tab. It still runs as an extension.
@@ -23,7 +23,7 @@ A Chrome extension for decoding workplace acronyms and building your own company
 
 ## Backup and share
 
-**Export** downloads a JSON backup of your glossary and favorites. **Import** accepts an exported file or a JSON array with `term`, `expansion`, `definition`, and `category` fields:
+**Export** downloads a JSON backup of your glossary and favorites. **Import** accepts an exported file or a JSON array with `term`, `expansion`, `definition`, and `category` fields (definition and category are optional):
 
 ```json
 [

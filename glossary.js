@@ -11,8 +11,9 @@ export function searchTerms(terms, query = '', category = 'all', view = 'all', f
     .sort((a, b) => Number(normalize(b.term) === exact) - Number(normalize(a.term) === exact) || a.term.localeCompare(b.term, undefined, { numeric: true, sensitivity: 'base' }) || a.expansion.localeCompare(b.expansion));
 }
 export function validateEntry(entry) {
+  entry = { definition: '', category: '', ...entry };
   for (const [field, max] of Object.entries({term:80, expansion:160, definition:2000, category:50})) {
-    if (typeof entry?.[field] !== 'string' || !entry[field].trim() || entry[field].length > max) throw new Error(`Each term needs a ${field} (up to ${max} characters).`);
+    if (typeof entry?.[field] !== 'string' || (['term', 'expansion'].includes(field) && !entry[field].trim()) || entry[field].length > max) throw new Error(`Each term needs a ${field} (up to ${max} characters).`);
   }
   return Object.fromEntries(['term', 'expansion', 'definition', 'category'].map(field => [field, entry[field].trim()]));
 }

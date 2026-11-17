@@ -34,7 +34,7 @@ function element(tag, className, text) {
   if (text !== undefined) node.textContent = text; return node;
 }
 function render() {
-  const categories = [...new Set(state.terms.map(entry => entry.category))].sort();
+  const categories = [...new Set(state.terms.map(entry => entry.category).filter(Boolean))].sort();
   const previous = $('category').value;
   $('category').replaceChildren(new Option('All categories', 'all'), ...categories.map(category => new Option(category, category)));
   $('category').value = categories.includes(previous) ? previous : 'all';
@@ -50,8 +50,10 @@ function render() {
     card.append(element('div', 'term-initial', entry.term[0].toUpperCase()));
     const content = element('div', 'term-content');
     const heading = element('div', 'term-heading');
-    heading.append(element('h2', '', entry.term), element('span', 'category-badge', entry.category));
-    content.append(heading, element('h3', '', entry.expansion), element('p', '', entry.definition));
+    heading.append(element('h2', '', entry.term));
+    if (entry.category) heading.append(element('span', 'category-badge', entry.category));
+    content.append(heading, element('h3', '', entry.expansion));
+    if (entry.definition) content.append(element('p', '', entry.definition));
     const actions = element('div', 'card-actions');
     const saved = state.favorites.includes(entry.id);
     const star = element('button', `star${saved ? ' saved' : ''}`, saved ? '★' : '☆');
