@@ -19,7 +19,7 @@ export function validateEntry(entry) {
 export function parseImport(text) {
   const data = JSON.parse(text);
   const rows = Array.isArray(data) ? data : data?.terms;
-  if (!Array.isArray(rows) || !rows.length || rows.length > 10000) throw new Error('Choose a JSON glossary containing 1–10,000 terms.');
+  if (!Array.isArray(rows) || rows.length > 10000) throw new Error('Choose a JSON glossary containing up to 10,000 terms.');
   return rows.map(validateEntry);
 }
 export function entryKey(entry) { return normalize(entry.term.trim()) + '\u0000' + normalize(entry.expansion.trim()); }

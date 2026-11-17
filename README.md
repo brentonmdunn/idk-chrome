@@ -12,7 +12,7 @@ A Chrome extension for decoding workplace acronyms and building your own company
 
 ## Use
 
-- Start typing to search 191 starter entries by acronym, full name, definition, or category. Exact acronym matches appear first. Multiple search words can match across fields.
+- Start typing to search your entries by acronym, full name, definition, or category. Exact acronym matches appear first. Multiple search words can match across fields.
 - Choose a category to narrow results.
 - Click **Add term** to save company-specific vocabulary. Choose an existing category or type a new one.
 - Click **Edit** on any entry to change its meaning or delete it. Duplicate acronyms with different full names are supported.
@@ -42,7 +42,7 @@ Import validates the entire file before saving, adds new entries to **My terms**
 
 The extension requests only Chrome's `storage` permission. It uses `chrome.storage.local` in your Chrome profile; no data is sent anywhere and no websites are read. Data is not synced between devices. Uninstalling the extension removes its data, so export a backup first. Exported files contain your definitions; handle company information according to your workplace policy.
 
-Starter definitions describe common usage and can be edited to match your company. Some acronyms deliberately have multiple entries because their meanings differ by team.
+The glossary starts empty. Add your own terms or import a glossary. On upgrade from version 1.0, the original bundled entries and their favorites are removed; user-created and imported entries are kept.
 
 ## Development
 

@@ -1,8 +1,8 @@
-import { SEED_TERMS } from './seed.js';
+import { prepareState } from './state.js';
 import { searchTerms, validateEntry, parseImport, entryKey } from './glossary.js';
 const $ = id => document.getElementById(id);
 const KEY = 'idk-glossary-v1';
-let state = { terms: structuredClone(SEED_TERMS), favorites: [] };
+let state = prepareState();
 let view = 'all', editingId = null, toastTimer, busy = false, ready = false;
 const isExtension = !!globalThis.chrome?.storage?.local;
 if (new URLSearchParams(location.search).has('tab') || !isExtension) document.body.classList.add('full-page');
@@ -22,7 +22,7 @@ async function mutate(change) {
   busy = true;
   try {
     const latest = await readState();
-    const next = structuredClone(latest || state);
+    const next = structuredClone(prepareState(latest || state));
     change(next);
     await writeState(next);
     state = next; render(); return true;
@@ -64,7 +64,7 @@ function render() {
   }
   if (!matches.length) {
     const empty = element('div', 'empty');
-    empty.append(element('h2', '', $('search').value ? 'No terms found. Yet.' : view === 'favorites' ? 'Keep your go-to terms close.' : 'Your glossary starts here.'), element('p', '', view === 'favorites' && !$('search').value ? 'Select the star on any term to save it here.' : 'Try a different search or add a term of your own.'));
+    empty.append(element('h2', '', $('search').value ? 'No terms found.' : view === 'favorites' ? 'No favorites yet.' : 'No terms yet.'), element('p', '', view === 'favorites' && !$('search').value ? 'Select the star on any term to save it here.' : 'Try a different search or add a term of your own.'));
     fragment.append(empty);
   }
   $('results').replaceChildren(fragment);
@@ -103,7 +103,7 @@ $('term-form').addEventListener('submit', async event => {
         next.terms[index] = { ...next.terms[index], ...entry };
       } else next.terms.push({ ...entry, id: crypto.randomUUID(), custom: true });
     });
-    if (saved) { $('editor').close(); toast(editingId ? 'Term updated.' : 'A little less jargon. Term added.'); }
+    if (saved) { $('editor').close(); toast(editingId ? 'Term updated.' : 'Term added.'); }
   } catch (error) { $('form-error').textContent = error.message; }
 });
 $('delete').addEventListener('click', async () => {
@@ -141,16 +141,15 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !$('editor').open && !$('confirm-dialog').open && $('search').value) { event.preventDefault(); $('search').value = ''; render(); }
 });
 if (isExtension) chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local' && changes[KEY]?.newValue) { state = changes[KEY].newValue; render(); }
+  if (area === 'local' && changes[KEY]?.newValue) { state = prepareState(changes[KEY].newValue); render(); }
 });
 async function init() {
   $('add').disabled = true;
   try {
     const saved = await readState();
-    if (saved) {
-      if (!Array.isArray(saved.terms) || !Array.isArray(saved.favorites)) throw new Error('Stored glossary could not be read.');
-      saved.terms.forEach(validateEntry); state = saved;
-    } else await writeState(state);
+    state = prepareState(saved);
+    state.terms.forEach(validateEntry);
+    if (!saved || saved.version !== state.version) await writeState(state);
     ready = true; $('add').disabled = false; render(); $('search').focus();
   } catch (error) { $('results').textContent = `Could not open glossary: ${error.message} Try reopening the extension.`; }
 }
