@@ -94,6 +94,12 @@ document.querySelectorAll('[data-view]').forEach(button => button.addEventListen
 }));
 $('add').addEventListener('click', () => openEditor());
 $('close-editor').addEventListener('click', () => $('editor').close());
+$('editor').addEventListener('click', event => {
+  if (event.target !== $('editor')) return;
+  const bounds = $('editor').getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom) $('editor').close();
+});
 $('term-form').addEventListener('submit', async event => {
   event.preventDefault();
   try {
